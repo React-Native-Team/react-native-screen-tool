@@ -43,6 +43,9 @@ import {NativeModules} from 'react-native';
 this.listenerScreen = new NativeEventEmitter(NativeModules.RNTEventEmitter);
 RNScreenTool.startListeningScreenshot()
 this.listenerScreen.addListener('UserDidTakeScreenshot', (e) => {
+  //user did take screenshot
+  
+  //Add text on the screenshot
   RNScreenTool.setImageText('text')
 })
 
