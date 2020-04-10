@@ -1,9 +1,4 @@
-
 #import "RNScreenTool.h"
-
-@interface RNScreenTool()
-
-@end
 
 @implementation RNScreenTool
 
@@ -29,32 +24,36 @@ RCT_EXPORT_METHOD(startListeningScreenshot){
                                                  name:UIApplicationUserDidTakeScreenshotNotification object:nil];
 }
 
-RCT_EXPORT_METHOD(startMonitoringScreenRecording:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject){
-    [[NSNotificationCenter defaultCenter]addObserver:[RNScreenTool sharedScreenTool] selector:@selector(screenCapturedDidChange) name:UIScreenCapturedDidChangeNotification  object:nil];
+RCT_EXPORT_METHOD(startMonitoringScreenRecording){
+    if (@available(iOS 11.0, *)) {
+        [[NSNotificationCenter defaultCenter]addObserver:[RNScreenTool sharedScreenTool] selector:@selector(screenCapturedDidChange) name:UIScreenCapturedDidChangeNotification  object:nil];
+    } else {
+        NSLog(@"####### RNScreenTool @available(iOS 11.0, *)");
+    }
 }
 
 RCT_EXPORT_METHOD(setImageText:(NSString *)text){
-    NSLog(@"fdsfowefwefew%@",text);
-    //人为截屏, 模拟用户截屏行为, 获取所截图片
     UIImage *tmpImage = [self imageWithScreenshot];
-    UIImage *image_ = [self DrawText:text forImage:tmpImage];
+    UIImage *image_ = [self drawText:text forImage:tmpImage];
     UIImageWriteToSavedPhotosAlbum(image_, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
 }
 
 - (void)screenCapturedDidChange
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"NotifyRNNotification" object:@{
-    @"name":@"ScreenCapturedDidChange",
-    @"params":[NSString stringWithFormat:@"%d",[UIScreen mainScreen].isCaptured]
-    }];
+    if (@available(iOS 11.0, *)) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NotifyRNNotification" object:@{
+            @"name":@"ScreenCapturedDidChange",
+            @"params":[NSString stringWithFormat:@"%d",[UIScreen mainScreen].isCaptured]
+        }];
+    } else {
+    }
 }
 
 - (void)userDidTakeScreenshot:(NSNotification *)notification
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NotifyRNNotification" object:@{
-    @"name":@"UserDidTakeScreenshot",
-    @"params":@"getText"
+        @"name":@"UserDidTakeScreenshot",
+        @"params":@"getText"
     }];
 }
 
@@ -111,34 +110,25 @@ RCT_EXPORT_METHOD(setImageText:(NSString *)text){
     return UIImagePNGRepresentation(image);
 }
 
-- (UIImage *)DrawText:(NSString *)text forImage:(UIImage *)image{
-    
-    CGSize size = CGSizeMake(image.size.width,image.size.height ); // 画布大小
-    
-    UIGraphicsBeginImageContextWithOptions(size,NO,0.0);
-    
-    [image drawAtPoint:CGPointMake(0,0)];
-    
-    // 获得一个位图图形上下文
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextDrawPath(context,kCGPathStroke);
+- (UIImage *)drawText:(NSString *)text forImage:(UIImage *)image{
+    CGSize imageSize = CGSizeMake(image.size.width,image.size.height);
     
     NSDictionary *attributes = @{ NSFontAttributeName:[UIFont systemFontOfSize:30.f], NSForegroundColorAttributeName:[UIColor redColor]};
+    CGSize textSize = [text boundingRectWithSize:imageSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+    CGFloat textBackgroundHight = textSize.height+10;
     
-    //计算出文字的宽度 设置控件限制的最大size为图片的size
-    CGSize textSize = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-    
-    // 画文字 让文字处于居中模式
-    [text drawAtPoint:CGPointMake((size.width - textSize.width)/2,image.size.height - 40) withAttributes:attributes];
-    
-    // 返回绘制的新图形
+    CGSize canvasSize = CGSizeMake(imageSize.width,imageSize.height+textBackgroundHight);
+    UIGraphicsBeginImageContextWithOptions(canvasSize,NO,0.0);
+    [image drawInRect:CGRectMake(0, textBackgroundHight, imageSize.width, imageSize.height)];
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextDrawPath(context,kCGPathStroke);
+    [text drawAtPoint:CGPointMake((imageSize.width - textSize.width)/2,0) withAttributes:attributes];
+
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    
     UIGraphicsEndImageContext();
     
     return newImage;
-    
 }
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
@@ -151,4 +141,3 @@ RCT_EXPORT_METHOD(setImageText:(NSString *)text){
 }
 
 @end
-

@@ -38,8 +38,21 @@
 ## Usage
 ```javascript
 import RNScreenTool from 'react-native-screen-tool';
+import {NativeModules} from 'react-native';
 
-// TODO: What to do with the module?
-RNScreenTool;
+this.listenerScreen = new NativeEventEmitter(NativeModules.RNTEventEmitter);
+RNScreenTool.startListeningScreenshot()
+this.listenerScreen.addListener('UserDidTakeScreenshot', (e) => {
+  RNScreenTool.setImageText('text')
+})
+
+RNScreenTool.startMonitoringScreenRecording()
+this.listenerScreen.addListener('ScreenCapturedDidChange', (e) => {
+  if (e == 1) {
+  //screen is being captured 
+  } else {
+  //screen is not being captured
+  }
+})
 ```
   

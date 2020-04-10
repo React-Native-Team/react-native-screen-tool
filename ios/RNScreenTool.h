@@ -9,4 +9,3 @@
 @interface RNScreenTool : NSObject <RCTBridgeModule>
 
 @end
-  
