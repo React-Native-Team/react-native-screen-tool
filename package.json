@@ -1,8 +1,7 @@
-
 {
-  "name": "react-native-screen-tool",
+  "name": "@react-native-team/react-native-screen-tool",
   "version": "0.0.0",
-  "description": "",
+  "description": "## Getting started",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,9 +9,17 @@
   "keywords": [
     "react-native"
   ],
-  "author": "",
-  "license": "",
+  "author": "react-native-team",
+  "license": "MIT",
   "peerDependencies": {
     "react-native": "^0.41.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/react-native-team/react-native-screen-tool.git"
+  },
+  "bugs": {
+    "url": "https://github.com/react-native-team/react-native-screen-tool/issues"
+  },
+  "homepage": "https://github.com/react-native-team/react-native-screen-tool#readme"
 }
