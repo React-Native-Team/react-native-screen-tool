@@ -12,12 +12,12 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 26
     buildToolsVersion "23.0.1"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -31,6 +31,8 @@ repositories {
 }
 
 dependencies {
-    compile 'com.facebook.react:react-native:+'
+    implementation 'com.facebook.react:react-native:+'
+    // 权限申请，https://github.com/soulqw/SoulPermission
+    implementation 'com.qw:soulpermission:1.1.7'
 }
   

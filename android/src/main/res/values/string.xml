@@ -1,0 +1,3 @@
+<resources>
+    <string name="screen_shot_permission">如果您拒绝此权限，将无法监听系统截屏，请点击授予权限。</string>
+</resources>
