@@ -1,6 +1,6 @@
 {
   "name": "react-native-screen-tool",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "react-native"
   ],
   "author": "",
-  "license": "",
+  "license": "MIT",
   "peerDependencies": {
     "react-native": "^0.41.2"
   },

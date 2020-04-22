@@ -115,7 +115,7 @@ RCT_EXPORT_METHOD(setImageText:(NSString *)text){
     
     NSDictionary *attributes = @{ NSFontAttributeName:[UIFont systemFontOfSize:30.f], NSForegroundColorAttributeName:[UIColor redColor]};
     CGSize textSize = [text boundingRectWithSize:imageSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-    CGFloat textBackgroundHight = textSize.height+10;
+    CGFloat textBackgroundHight = textSize.height+30;
     
     CGSize canvasSize = CGSizeMake(imageSize.width,imageSize.height+textBackgroundHight);
     UIGraphicsBeginImageContextWithOptions(canvasSize,NO,0.0);
@@ -123,7 +123,7 @@ RCT_EXPORT_METHOD(setImageText:(NSString *)text){
 
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextDrawPath(context,kCGPathStroke);
-    [text drawAtPoint:CGPointMake((imageSize.width - textSize.width)/2,0) withAttributes:attributes];
+    [text drawInRect:CGRectMake((imageSize.width - textSize.width)/2,30, imageSize.width, textSize.height) withAttributes:attributes];
 
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
