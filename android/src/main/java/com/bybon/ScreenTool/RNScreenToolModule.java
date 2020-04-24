@@ -35,7 +35,7 @@ public class RNScreenToolModule extends ReactContextBaseJavaModule {
   public RNScreenToolModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
-    SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE,
+    SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,
             new CheckSoulPermissionListener(reactContext.getString(R.string.screen_shot_permission), new Runnable() {
               @Override
               public void run() {
